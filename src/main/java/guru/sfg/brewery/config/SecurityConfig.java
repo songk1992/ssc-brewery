@@ -3,9 +3,12 @@ package guru.sfg.brewery.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,11 +35,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();
     }
 
-    @Override
-    @Bean
-    protected UserDetailsService userDetailsService(){
-        UserDetails admin = User.withDefaultPasswordEncoder().username("spring").password("kimc").roles("ADMIN").build();
-        UserDetails user = User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build();
-        return new InMemoryUserDetailsManager(admin, user);
+    // 방법 1
+    //    @Override
+    //    @Bean
+    //    protected UserDetailsService userDetailsService() {
+    //        UserDetails admin = User.withDefaultPasswordEncoder().username("spring").password("kimc").roles("ADMIN").build();
+    //        UserDetails user = User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build();
+    //        return new InMemoryUserDetailsManager(admin, user);
+    //    }
+
+    // 방법 2
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+        auth.inMemoryAuthentication()
+                .withUser("spring")
+                .password("{noop}kimc")
+                .roles("ADMIN")
+                .and()
+                .withUser("user")
+                .password("{noop}password")
+                .roles("USER");
     }
+
+
 }
