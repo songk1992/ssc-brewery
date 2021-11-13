@@ -76,7 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         auth.inMemoryAuthentication()
                 .withUser("scott")
-                .password("{bcrypt15}$2a$15$z3Y.kpPWjafCA.ve5.ZAoO9LgHlTW31n7eRK87B6wTwIsGQNAUREu")
+                .password("{bcrypt10}$2a$10$VycvjtCj1NJSfqcl9n4yv..v4n4cYxmEC9xJoA0mCKYOZVPikee/a")
                 .roles("CUSTOMER");
     }
 
