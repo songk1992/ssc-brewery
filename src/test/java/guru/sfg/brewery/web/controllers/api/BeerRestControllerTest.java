@@ -12,25 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class BeerRestControllerTest extends BaseIT {
 
-    @Test
-    void listBreweriesJsonCustomer() throws Exception {
-        mockMvc.perform(get("/brewery/breweries")
-                        .with(httpBasic("scott", "tiger")))
-                .andExpect(status().is2xxSuccessful());
-    }
-
-    @Test
-    void listBreweriesUser() throws Exception {
-        mockMvc.perform(get("/brewery/breweries")
-                        .with(httpBasic("spring", "kimc")))
-                .andExpect(status().isForbidden());
-    }
-
-    @Test
-    void listBreweriesNoAuth() throws Exception {
-        mockMvc.perform(get("/brewery/breweries"))
-                .andExpect(status().isUnauthorized());
-    }
 
 
     @Test
