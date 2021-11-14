@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -67,22 +68,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //    }
 
     // 방법 2
-//        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//            auth.inMemoryAuthentication()
-//                    .withUser("spring")
-//                    .password("{bcrypt}$2a$10$xxvx44xpSgliqwlhV1.r0e2g71uvcrnHnXIAdLjggJYfQggFheABC")
-//                    .roles("ADMIN");
-//
-//            auth.inMemoryAuthentication()
-//                    .withUser("user")
-//                    .password("{sha256}d12b6eed0bbecaa69f17df67cf559c3e64acaa1207c60fe0af566e5e13842954d5621f1d6f734aa7")
-//                    .roles("USER");
-//
-//            auth.inMemoryAuthentication()
-//                    .withUser("scott")
-//                    .password("{bcrypt10}$2a$10$VycvjtCj1NJSfqcl9n4yv..v4n4cYxmEC9xJoA0mCKYOZVPikee/a")
-//                    .roles("CUSTOMER");
-//        }
+    //    @Override
+    //        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    //            auth.inMemoryAuthentication()
+    //                    .withUser("spring")
+    //                    .password("{bcrypt}$2a$10$xxvx44xpSgliqwlhV1.r0e2g71uvcrnHnXIAdLjggJYfQggFheABC")
+    //                    .roles("ADMIN");
+    //
+    //            auth.inMemoryAuthentication()
+    //                    .withUser("user")
+    //                    .password("{sha256}d12b6eed0bbecaa69f17df67cf559c3e64acaa1207c60fe0af566e5e13842954d5621f1d6f734aa7")
+    //                    .roles("USER");
+    //
+    //            auth.inMemoryAuthentication()
+    //                    .withUser("scott")
+    //                    .password("{bcrypt10}$2a$10$VycvjtCj1NJSfqcl9n4yv..v4n4cYxmEC9xJoA0mCKYOZVPikee/a")
+    //                    .roles("CUSTOMER");
+    //       }
 
 
 }
