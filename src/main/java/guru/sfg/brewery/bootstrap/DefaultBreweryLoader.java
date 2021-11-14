@@ -17,12 +17,19 @@
 package guru.sfg.brewery.bootstrap;
 
 import guru.sfg.brewery.domain.*;
+import guru.sfg.brewery.domain.security.Authority;
+import guru.sfg.brewery.domain.security.User;
 import guru.sfg.brewery.repositories.*;
+import guru.sfg.brewery.services.user.AuthorityService;
+import guru.sfg.brewery.services.user.UserService;
 import guru.sfg.brewery.web.model.BeerStyleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -45,10 +52,63 @@ public class DefaultBreweryLoader implements CommandLineRunner {
     private final BeerOrderRepository beerOrderRepository;
     private final CustomerRepository customerRepository;
 
+    private final UserService userService;
+    private final AuthorityService authorityService;
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public void run(String... args) {
         loadBreweryData();
         loadCustomerData();
+
+        authorityService.saveAuthorityList(getAuthorityDataList());
+        userService.saveUserList(getUserDataList());
+
+    }
+
+    private List<User> getUserDataList() {
+
+        System.out.println("init user data");
+        List<User> userList = new ArrayList<>();
+
+        User user = new User();
+        user.setUsername("spring");
+        user.setPassword(passwordEncoder.encode("kimc"));
+        user.setAuthorities(authorityService.getAuthoritySetByRole("ADMIN"));
+        userList.add(user);
+
+        User user2 = new User();
+        user2.setUsername("user");
+        user2.setPassword("{sha256}d12b6eed0bbecaa69f17df67cf559c3e64acaa1207c60fe0af566e5e13842954d5621f1d6f734aa7");
+        user2.setAuthorities(authorityService.getAuthoritySetByRole("USER"));
+        userList.add(user2);
+
+        User user3 = new User();
+        user3.setUsername("scott");
+        user3.setPassword("{bcrypt10}$2a$10$VycvjtCj1NJSfqcl9n4yv..v4n4cYxmEC9xJoA0mCKYOZVPikee/a");
+        user3.setAuthorities(authorityService.getAuthoritySetByRole("CUSTOMER"));
+        userList.add(user3);
+
+        return userList;
+    }
+
+    private List<Authority> getAuthorityDataList() {
+        System.out.println("init authority data");
+        List<Authority> authorityList = new ArrayList<>();
+
+        Authority authUser = new Authority();
+        authUser.setRole("USER");
+        authorityList.add(authUser);
+
+        Authority authAdmin = new Authority();
+        authAdmin.setRole("ADMIN");
+        authorityList.add(authAdmin);
+
+        Authority authCustomer = new Authority();
+        authCustomer.setRole("CUSTOMER");
+        authorityList.add(authCustomer);
+
+        return authorityList;
     }
 
     private void loadCustomerData() {

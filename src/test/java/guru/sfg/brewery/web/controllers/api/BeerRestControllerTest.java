@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BeerRestControllerTest extends BaseIT {
 
     @Test
-    void initCretionFormWithAdmin() throws Exception{
+    void initCreationFormWithAdmin() throws Exception{
         mockMvc.perform(get("/beers/new").with(httpBasic("spring", "kimc")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/createBeer"))
