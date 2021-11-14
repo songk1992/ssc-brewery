@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -33,14 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // h2 콘솔 접속
-        //http.headers().frameOptions().disable();
-
-        //http.addFilterBefore(restHeaderAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class).csrf().disable();
+        //
+        http.addFilterBefore(restHeaderAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class).csrf().disable();
 
 
         http
                 .authorizeRequests(authorize -> authorize
+                        .antMatchers("/h2-console/**").permitAll() // do not use in production
                         .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
                         .antMatchers("/beers/find", "/beers*").permitAll()
                         .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
@@ -52,6 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().and()
                 .httpBasic();
+
+        // h2-console config
+        http.headers().frameOptions().sameOrigin();
     }
 
     // 방법 1
