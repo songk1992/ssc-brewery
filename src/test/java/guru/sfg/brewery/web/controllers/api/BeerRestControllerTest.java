@@ -8,11 +8,8 @@ import guru.sfg.brewery.web.model.BeerStyleEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 
 import java.util.Random;
 
@@ -72,7 +69,6 @@ class BeerRestControllerTest extends BaseIT {
                             .header("Api-Key", "spring").header("Api-secret", "kimc"))
                     .andExpect(status().isOk());
         }
-
 
 
     }
