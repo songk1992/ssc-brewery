@@ -8,9 +8,11 @@ import guru.sfg.brewery.web.model.BeerStyleEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 
 import java.util.Random;
 
@@ -71,6 +73,8 @@ class BeerRestControllerTest extends BaseIT {
                     .andExpect(status().isOk());
         }
 
+
+
     }
 
     @Test
@@ -98,7 +102,6 @@ class BeerRestControllerTest extends BaseIT {
     }
 
 
-
     @Test
     void findBeers() throws Exception {
         mockMvc.perform(get("/api/v1/beer/"))
@@ -119,4 +122,6 @@ class BeerRestControllerTest extends BaseIT {
                         .with(httpBasic("spring", "kimc")))
                 .andExpect(status().isOk());
     }
+
+
 }
