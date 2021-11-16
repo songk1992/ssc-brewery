@@ -2,7 +2,6 @@ package guru.sfg.brewery.services.user;
 
 import guru.sfg.brewery.domain.security.Authority;
 import guru.sfg.brewery.repositories.security.AuthorityRepository;
-import guru.sfg.brewery.repositories.security.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +21,6 @@ public class AuthorityServiceImpl implements AuthorityService{
     }
     @Override
     public Set<Authority> getAuthoritySetByRole(String role) {
-        return authorityRepository.findAll().stream().filter(authority -> authority.getRole().equals(role)).collect(Collectors.toSet());
+        return authorityRepository.findAll().stream().filter(authority -> authority.getPermission().equals(role)).collect(Collectors.toSet());
     }
 }
