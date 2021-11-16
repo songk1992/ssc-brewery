@@ -18,7 +18,7 @@ import java.util.Random;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @Nested
@@ -130,51 +130,50 @@ class BeerRestControllerTest extends BaseIT {
         }
     }
 
-//    @Test
-//    void initCreationFormWithAdmin() throws Exception {
-//        mockMvc.perform(get("/beers/new").with(httpBasic("spring", "kimc")))
-//                .andExpect(status().isOk())
+    // 기타
+    @Test
+    void initCreationFormWithAdmin() throws Exception {
+        mockMvc.perform(get("/beers/new").with(httpBasic("spring", "kimc")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("beers/createBeer"))
+                .andExpect(model().attributeExists("beer"));
+    }
+
+    @Test
+    void initCreationForm() throws Exception {
+        mockMvc.perform(get("/beers/new").with(httpBasic("user", "password")))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void initCreationFormWithScott() throws Exception {
+        mockMvc.perform(get("/beers/new").with(httpBasic("scott", "tiger")))
+                .andExpect(status().isForbidden());
 //                .andExpect(view().name("beers/createBeer"))
 //                .andExpect(model().attributeExists("beer"));
-//    }
-//
-//    @Test
-//    void initCreationForm() throws Exception {
-//        mockMvc.perform(get("/beers/new").with(httpBasic("user", "password")))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("beers/createBeer"))
-//                .andExpect(model().attributeExists("beer"));
-//    }
-//
-//    @Test
-//    void initCreationFormWithScott() throws Exception {
-//        mockMvc.perform(get("/beers/new").with(httpBasic("scott", "tiger")))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("beers/createBeer"))
-//                .andExpect(model().attributeExists("beer"));
-//    }
-//
-//
-//    @Test
-//    void findBeers() throws Exception {
-//        mockMvc.perform(get("/api/v1/beer/"))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    void findBeerById() throws Exception {
-//        Beer beer = beerRepository.findAll().get(0);
-//
-//        mockMvc.perform(get("/api/v1/beer/" + beer.getId()))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    void findBeerFormADMIN() throws Exception {
-//        mockMvc.perform(get("/beers").param("beerName", "")
-//                        .with(httpBasic("spring", "kimc")))
-//                .andExpect(status().isOk());
-//    }
+    }
+
+
+    @Test
+    void findBeers() throws Exception {
+        mockMvc.perform(get("/api/v1/beer/"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void findBeerById() throws Exception {
+        Beer beer = beerRepository.findAll().get(0);
+
+        mockMvc.perform(get("/api/v1/beer/" + beer.getId()))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void findBeerFormADMIN() throws Exception {
+        mockMvc.perform(get("/beers").param("beerName", "")
+                        .with(httpBasic("spring", "kimc")))
+                .andExpect(status().isOk());
+    }
 
 
 }
