@@ -45,10 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .antMatchers("/h2-console/**").permitAll() // do not use in production
                         .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
 
-                        .mvcMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
+//                        .mvcMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/brewery/breweries").hasAnyRole("ADMIN", "CUSTOMER")
                         .antMatchers(HttpMethod.GET, "/brewery/api/v1/breweries").hasAnyRole("ADMIN", "CUSTOMER")
-                        .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll()
+//                        .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll()
                         .mvcMatchers("/beers/find", "/beers/{beerId}").hasAnyRole("ADMIN","CUSTOMER","USER")
                 )
                 // Annotation 기반이 이것보다 깔끔함
