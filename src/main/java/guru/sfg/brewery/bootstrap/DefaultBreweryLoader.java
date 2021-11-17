@@ -51,6 +51,10 @@ public class DefaultBreweryLoader implements CommandLineRunner {
     public static final String EXAMPLE1_DISTRIBUTING = "example1 Distributing";
     public static final String EXAMPLE2_DISTRIBUTING = "example2 Distributing";
     public static final String EXAMPLE3_DISTRIBUTING = "example3 Distributing";
+    public static final String EXAMPLE1_USER = "example1 user";
+    public static final String EXAMPLE2_USER = "example2 user";
+    public static final String EXAMPLE3_USER = "example3 user";
+
 
     public static final String BEER_1_UPC = "0631234200036";
     public static final String BEER_2_UPC = "0631234300019";
