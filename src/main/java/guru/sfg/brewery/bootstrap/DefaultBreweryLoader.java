@@ -51,9 +51,9 @@ public class DefaultBreweryLoader implements CommandLineRunner {
     public static final String EXAMPLE1_DISTRIBUTING = "example1 Distributing";
     public static final String EXAMPLE2_DISTRIBUTING = "example2 Distributing";
     public static final String EXAMPLE3_DISTRIBUTING = "example3 Distributing";
-    public static final String EXAMPLE1_USER = "example1 user";
-    public static final String EXAMPLE2_USER = "example2 user";
-    public static final String EXAMPLE3_USER = "example3 user";
+    public static final String EXAMPLE1_USER = "example1_username";
+    public static final String EXAMPLE2_USER = "example2_username";
+    public static final String EXAMPLE3_USER = "example3_username";
 
 
     public static final String BEER_1_UPC = "0631234200036";
@@ -103,17 +103,17 @@ public class DefaultBreweryLoader implements CommandLineRunner {
                 .build());
 
         // create Users
-        User example1User = userRepository.save(User.builder().username("example1")
+        User example1User = userRepository.save(User.builder().username(EXAMPLE1_USER)
                 .password(passwordEncoder.encode("password"))
                 .customer(example1Customer)
                 .role(customerRole).build());
 
-        User example2User = userRepository.save(User.builder().username("example2")
+        User example2User = userRepository.save(User.builder().username(EXAMPLE2_USER)
                 .password(passwordEncoder.encode("password"))
                 .customer(example2Customer)
                 .role(customerRole).build());
 
-        User example3User = userRepository.save(User.builder().username("example3")
+        User example3User = userRepository.save(User.builder().username(EXAMPLE3_USER)
                 .password(passwordEncoder.encode("password"))
                 .customer(example3Customer)
                 .role(customerRole).build());
