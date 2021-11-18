@@ -48,7 +48,7 @@ public class BeerOrderControllerV2 {
         }
     }
 
-    @BeerOrderReadPermission
+    @BeerOrderV2ReadPermission
     @GetMapping("{orderId}")
     public BeerOrderDto getOrder(@PathVariable("orderId") UUID orderId) {
         BeerOrderDto beerOrderDto = beerOrderService.getOrderById(orderId);
