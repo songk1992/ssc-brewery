@@ -7,7 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 @PreAuthorize("hasAuthority('order.read') OR " +
-        "hasAuthority('customer.order.read') " +
-        "AND @beerOrderAuthenticationManager.customerIdMatches(authentication, #customerId)")
+        "hasAuthority('customer.order.read') ")
 public @interface BeerOrderReadPermission {
 }

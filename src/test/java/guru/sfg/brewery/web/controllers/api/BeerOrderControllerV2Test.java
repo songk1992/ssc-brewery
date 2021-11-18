@@ -89,7 +89,6 @@ class BeerOrderControllerV2Test extends BaseIT {
     }
 
 
-    @Disabled
     @Transactional
     @Test
     void getByOrderIdNotAuth() throws Exception {
@@ -99,7 +98,6 @@ class BeerOrderControllerV2Test extends BaseIT {
                 .andExpect(status().isUnauthorized());
     }
 
-    @Disabled
     @Transactional
     @WithUserDetails("spring")
     @Test
@@ -110,7 +108,6 @@ class BeerOrderControllerV2Test extends BaseIT {
                 .andExpect(status().is2xxSuccessful());
     }
 
-    @Disabled
     @Transactional
     @WithUserDetails(DefaultBreweryLoader.EXAMPLE1_USER)
     @Test
@@ -121,7 +118,6 @@ class BeerOrderControllerV2Test extends BaseIT {
                 .andExpect(status().is2xxSuccessful());
     }
 
-    @Disabled
     @Transactional
     @WithUserDetails(DefaultBreweryLoader.EXAMPLE2_USER)
     @Test
@@ -129,6 +125,6 @@ class BeerOrderControllerV2Test extends BaseIT {
         BeerOrder beerOrder = stPeteCustomer.getBeerOrders().stream().findFirst().orElseThrow();
 
         mockMvc.perform(get(API_ROOT + beerOrder.getId()))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isNotFound()); // not found 를 사용해서 비밀번호가 있는지 없는지 확인 불가능하게 한다.
     }
 }

@@ -9,15 +9,18 @@ import guru.sfg.brewery.services.BeerOrderService;
 import guru.sfg.brewery.web.model.BeerOrderDto;
 import guru.sfg.brewery.web.model.BeerOrderPagedList;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
-@RequestMapping("api/v2/orders")
+@RequestMapping("api/v2/orders/")
 @RestController
 public class BeerOrderControllerV2 {
     private static final Integer DEFAULT_PAGE_NUMBER = 0;
@@ -45,17 +48,17 @@ public class BeerOrderControllerV2 {
         }
     }
 
-    @BeerOrderCreatePermission
-    @PostMapping("orders")
-    @ResponseStatus(HttpStatus.CREATED)
-    public BeerOrderDto placeOrder(@PathVariable("customerId") UUID customerId, @RequestBody BeerOrderDto beerOrderDto) {
-        return beerOrderService.placeOrder(customerId, beerOrderDto);
-    }
-
     @BeerOrderReadPermission
-    @GetMapping("orders/{orderId}")
-    public BeerOrderDto getOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId) {
-        return beerOrderService.getOrderById(customerId, orderId);
+    @GetMapping("{orderId}")
+    public BeerOrderDto getOrder(@PathVariable("orderId") UUID orderId) {
+        BeerOrderDto beerOrderDto = beerOrderService.getOrderById(orderId);
+
+        if(beerOrderDto == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order Not Found");
+        }
+
+        log.debug("Found Order : " + beerOrderDto);
+        return beerOrderDto;
     }
 
     @BeerOrderPickUpPermission
@@ -64,4 +67,6 @@ public class BeerOrderControllerV2 {
     public void pickupOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId) {
         beerOrderService.pickupOrder(customerId, orderId);
     }
+
+
 }
