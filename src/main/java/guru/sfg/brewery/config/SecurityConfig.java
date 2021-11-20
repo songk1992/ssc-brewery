@@ -5,7 +5,6 @@ import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
@@ -24,13 +24,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
+    private final PersistentTokenRepository persistentTokenRepository;
 
     // needed for use with Spring Data JPA SPeL
     @Bean
-    public SecurityEvaluationContextExtension securityEvaluationContextExtension(){
+    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
     }
-
 
 
     public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager) {
@@ -56,8 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests(authorize -> authorize
-                        .antMatchers("/h2-console/**").permitAll() // do not use in production
-                        .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
+                                .antMatchers("/h2-console/**").permitAll() // do not use in production
+                                .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
 
 //                        .mvcMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
 //                        .antMatchers(HttpMethod.GET, "/brewery/breweries").hasAnyRole("ADMIN", "CUSTOMER")
@@ -66,29 +66,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                        .mvcMatchers("/beers/find", "/beers/{beerId}").hasAnyRole("ADMIN","CUSTOMER","USER")
                 )
                 // Annotation 기반이 이것보다 깔끔함
-                
-                
+
+
                 .authorizeRequests()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin(loginConfigurer -> loginConfigurer
-                    .loginProcessingUrl("/login")
-                    .loginPage("/")
-                    .permitAll()
-                    .successForwardUrl("/")
-                    .defaultSuccessUrl("/")
-                    .failureUrl("/?error")
+                        .loginProcessingUrl("/login")
+                        .loginPage("/")
+                        .permitAll()
+                        .successForwardUrl("/")
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/?error")
                 )
-                .logout(logoutConfigurer-> logoutConfigurer
+                .logout(logoutConfigurer -> logoutConfigurer
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                         .logoutSuccessUrl("/?logout")
                         .permitAll())
                 .httpBasic()
                 .and().csrf().ignoringAntMatchers("/h2-console/**", "/api/**")
-                .and().rememberMe()
-                .key("sfg-key")
-                .userDetailsService(userDetailsService);
+                .and().rememberMe().tokenRepository(persistentTokenRepository).userDetailsService(userDetailsService);
+        //.rememberMe()
+        //.key("sfg-key")
+        //.userDetailsService(userDetailsService);
 
         // h2-console config
         http.headers().frameOptions().sameOrigin();
